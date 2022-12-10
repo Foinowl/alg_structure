@@ -1,20 +1,15 @@
 package lab1;
 
 import java.util.Optional;
+import lab2.BubbleSort;
+import utils.CollectionUtils;
 
 
 public class SimpleArrayCalculator implements ArrayCalculator {
 
-
-    private static void swap(int[] x, int a, int b) {
-        int t = x[a];
-        x[a] = x[b];
-        x[b] = t;
-    }
-
     @Override
     public AverageResult calculateAverageAndToNullNumber(double[] source) {
-        if (source == null || source.length == 0) {
+        if (CollectionUtils.isEmpty(source)) {
             return null;
         }
 
@@ -27,11 +22,11 @@ public class SimpleArrayCalculator implements ArrayCalculator {
 
     @Override
     public RepeatResult sortArrayAndCountRepeatNumber(int[] source) {
-        if (source == null || source.length == 0) {
+        if (CollectionUtils.isEmpty(source)) {
             return null;
         }
 
-        sort(source);
+        BubbleSort.sort(source);
 
         int[] keys = new int[source.length];
         int[] values = new int[source.length];
@@ -63,13 +58,6 @@ public class SimpleArrayCalculator implements ArrayCalculator {
         }
 
         return new RepeatResult(keys, values, source);
-    }
-
-    private void sort(int[] source) {
-        for (int i = 0; i < source.length; i++)
-            for (int j = i; j > 0 &&
-                source[j - 1] > source[j]; j--)
-                swap(source, j, j - 1);
     }
 
     @Override
