@@ -8,20 +8,20 @@ public interface ArrayCalculator {
 * 1. Разработайте программу по описанию. Дан массив вещественных чисел. Вычислите
     среднее значение и занулите элементы, которые меньше среднего
 * */
-    AverageResult calculateAverageAndToNullNumber(List<Double> source);
+    AverageResult calculateAverageAndToNullNumber(double[] source);
 
 
     //    4. Разработайте следующий алгоритм сортировки. Дан массив чисел от 0 до 9.
 //    Посчитайте кол-во повторений каждой из цифр и выведите отсортированный
 //    массив (упорядоченный от меньшего к большему) на основе этой информации
-    RepeatResult sortArrayAndCountRepeatNumber(List<Integer> source);
+    RepeatResult sortArrayAndCountRepeatNumber(int[] source);
 
 
     /*
     * 3. Разработайте рекурсивный алгоритм рассчета суммы элементов целочисленного
 массива
     * */
-    Integer recursiveCalculateSum(List<Integer> source);
+    Integer recursiveCalculateSum(int[] source);
 
 
     /*

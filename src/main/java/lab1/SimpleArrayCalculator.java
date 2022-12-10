@@ -1,53 +1,84 @@
 package lab1;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import utils.CollectionUtils;
+import java.util.Optional;
 
 
 public class SimpleArrayCalculator implements ArrayCalculator {
 
 
+    private static void swap(int[] x, int a, int b) {
+        int t = x[a];
+        x[a] = x[b];
+        x[b] = t;
+    }
+
     @Override
-    public AverageResult calculateAverageAndToNullNumber(List<Double> source) {
-        if (CollectionUtils.isEmpty(source)) {
+    public AverageResult calculateAverageAndToNullNumber(double[] source) {
+        if (source == null || source.length == 0) {
             return null;
         }
 
-        var average = getAverage(source);
+        double average = getAverage(source);
 
-        var result = makeNumberToNullIfLessAverage(average, source);
+        double[] result = makeNumberToNullIfLessAverage(average, source);
 
         return new AverageResult(average, result);
     }
 
-
     @Override
-    public RepeatResult sortArrayAndCountRepeatNumber(List<Integer> source) {
-        if (CollectionUtils.isEmpty(source)) {
+    public RepeatResult sortArrayAndCountRepeatNumber(int[] source) {
+        if (source == null || source.length == 0) {
             return null;
         }
 
-        var result = new ArrayList<>(source);
-        Collections.sort(result);
+        sort(source);
 
-        var maps = source
-            .stream()
-            .collect(Collectors.toMap(it -> it, it -> 1, Integer::sum));
+        int[] keys = new int[source.length];
+        int[] values = new int[source.length];
 
-        return new RepeatResult(maps, result);
+        int prev = source[0];
+        int repeat = 0;
+        int indexRepeat = 0;
+
+        int i = 0;
+        while (i < source.length) {
+            if (source[i] == prev) {
+                repeat++;
+                i++;
+
+                if (i == source.length) {
+                    keys[indexRepeat] = prev;
+                    values[indexRepeat] = repeat;
+                }
+
+                continue;
+            }
+
+            keys[indexRepeat] = prev;
+            values[indexRepeat] = repeat;
+
+            repeat = 0;
+            prev = source[i];
+            indexRepeat++;
+        }
+
+        return new RepeatResult(keys, values, source);
     }
 
+    private void sort(int[] source) {
+        for (int i = 0; i < source.length; i++)
+            for (int j = i; j > 0 &&
+                source[j - 1] > source[j]; j--)
+                swap(source, j, j - 1);
+    }
 
     @Override
-    public Integer recursiveCalculateSum(List<Integer> source) {
-        if (CollectionUtils.isEmpty(source)) {
+    public Integer recursiveCalculateSum(int[] source) {
+        if (source == null) {
             return null;
         }
 
-        var result = new ArrayList<>(source);
-
-        return recursiveCalculateSumInternal(result, 0, 0);
+        return recursiveCalculateSumInternal(source, 0, 0);
     }
 
 
@@ -76,7 +107,7 @@ public class SimpleArrayCalculator implements ArrayCalculator {
 
         int n = source.length;
 
-        for (int i = 0; i < n / 2; i++ ) {
+        for (int i = 0; i < n / 2; i++) {
             int temp = source[i];
             source[i] = source[n - i - 1];
             source[n - i - 1] = temp;
@@ -84,35 +115,35 @@ public class SimpleArrayCalculator implements ArrayCalculator {
     }
 
 
-    private Integer recursiveCalculateSumInternal(List<Integer> source, Integer result, Integer position) {
-        if (source.size() == position) {
+    private Integer recursiveCalculateSumInternal(int[] source, Integer result, Integer position) {
+        if (source.length == position) {
             return result;
         }
 
-        result += source.get(position);
+        result += source[position];
         position++;
 
         return recursiveCalculateSumInternal(source, result, position);
     }
 
 
-    private Double getAverage(List<Double> source) {
+    private double getAverage(double[] source) {
         double total = 0.0;
 
-        for (Double number : source) {
+        for (double number : source) {
             total += number;
         }
 
-        return total / source.size();
+        return total / source.length;
     }
 
 
-    private List<Double> makeNumberToNullIfLessAverage(Double average, List<Double> source) {
-        var result = new ArrayList<Double>();
+    private double[] makeNumberToNullIfLessAverage(Double average, double[] source) {
+        double[] result = new double[source.length];
 
-        for (Double number : source) {
-            var el = number < average ? 0.0 : number;
-            result.add(el);
+        for (int i = 0; i < source.length; i++) {
+            var el = source[i] < average ? 0.0 : source[i];
+            result[i] = el;
         }
 
         return result;
@@ -120,10 +151,10 @@ public class SimpleArrayCalculator implements ArrayCalculator {
 
 
     private enum OperationBasic {
-        PLUS("+", (x, y) -> x + y) ,
-        MINUS("-", (x, y) -> x - y) ,
-        DIVIDE("/", (x, y) -> x / y) ,
-        MULTIPLE("*", (x, y) -> x * y) ,
+        PLUS("+", (x, y) -> x + y),
+        MINUS("-", (x, y) -> x - y),
+        DIVIDE("/", (x, y) -> x / y),
+        MULTIPLE("*", (x, y) -> x * y),
         ;
 
         private final String symbol;
@@ -142,11 +173,6 @@ public class SimpleArrayCalculator implements ArrayCalculator {
                 .apply(x, y);
         }
 
-
-        public Operation getOperation() {
-            return operation;
-        }
-
         private static Optional<OperationBasic> of(String operation) {
             OperationBasic element = null;
 
@@ -157,6 +183,10 @@ public class SimpleArrayCalculator implements ArrayCalculator {
             }
 
             return Optional.empty();
+        }
+
+        public Operation getOperation() {
+            return operation;
         }
     }
 
