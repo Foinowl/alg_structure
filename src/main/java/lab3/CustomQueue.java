@@ -1,12 +1,13 @@
 package lab3;
 
-public interface Stack<T> {
-
+public interface CustomQueue<T> {
     void push(T element);
+
+    T peek();
 
     T pop();
 
-    Stack<T> clone();
+    CustomQueue<T> clone();
 
     void clear();
 

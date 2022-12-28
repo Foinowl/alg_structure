@@ -85,20 +85,13 @@ public class SimpleList<T> implements CustomList<T> {
 
     @Override
     public void insert(int index, T element) {
-        validateArrayIndex(index);
-        shiftToRight(index);
+        increaseArray();
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        System.arraycopy(array, index, array, index + 1, size - index);
         array[index] = element;
         size++;
-    }
-
-
-    private void shiftToRight(int insertIndex) {
-        Object previousElement = array[insertIndex];
-        for (int currentIndex = insertIndex + 1; currentIndex < array.length; currentIndex++) {
-            Object temporaryValue = array[currentIndex];
-            array[currentIndex] = previousElement;
-            previousElement = temporaryValue;
-        }
     }
 
 
@@ -113,9 +106,7 @@ public class SimpleList<T> implements CustomList<T> {
     public T delete(int index) {
         validateArrayIndex(index);
         var existsElement = array[index];
-        for (int i = index; i < size - 1; i++) {
-            array[i] = array[i + 1];
-        }
+        System.arraycopy(array, index + 1, array, index, size - 1 - index);
         size--;
         return (T) existsElement;
     }
