@@ -21,11 +21,12 @@ public interface CustomList<T> {
     * удаление элемента по значению
 В случае, если элемент с ключом не найден, функция должна вернуть false, иначе - true
     * */
-    T delete(int index);
+    T remove(int index);
 
     /*
-     * удаление элемента по индексу
-     * */
+    * удаление элемента по значению
+В случае, если элемент с ключом не найден, функция должна вернуть false, иначе - true
+    * */
     boolean remove(T element);
 
     /*
@@ -42,5 +43,5 @@ public interface CustomList<T> {
 
     int size();
 
-    Object[] clone();
+    CustomList<T> copy();
 }

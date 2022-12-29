@@ -60,13 +60,13 @@ public class SimpleStackTest {
     }
 
     @Test
-    void testCloneStack() {
+    void testCopyStack() {
         var stack = new SimpleStack<Integer>();
         stack.push(1);
         stack.push(2);
         stack.push(3);
 
-        var cloneStack = stack.clone();
+        var cloneStack = stack.copy();
         Assertions.assertEquals(stack.size(), cloneStack.size());
 
         Assertions.assertEquals(stack.pop(), cloneStack.pop());

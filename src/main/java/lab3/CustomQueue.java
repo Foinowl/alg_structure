@@ -7,7 +7,7 @@ public interface CustomQueue<T> {
 
     T pop();
 
-    CustomQueue<T> clone();
+    CustomQueue<T> copy();
 
     void clear();
 

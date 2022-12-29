@@ -8,6 +8,10 @@ public class SimpleStack<T> implements CustomQueue<T> {
         this.list = new SimpleList<>(a);
     }
 
+    public SimpleStack(CustomList<T> list) {
+        this.list = list;
+    }
+
     public SimpleStack() {
         this.list = new SimpleList<>();
     }
@@ -26,13 +30,13 @@ public class SimpleStack<T> implements CustomQueue<T> {
 
     @Override
     public T pop() {
-        return list.delete(list.size() - 1);
+        return list.remove(list.size() - 1);
     }
 
 
     @Override
-    public CustomQueue<T> clone() {
-        return new SimpleStack<>(list.clone());
+    public CustomQueue<T> copy() {
+        return new SimpleStack<>(list.copy());
     }
 
 

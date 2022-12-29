@@ -62,13 +62,13 @@ public class SimpleQueueTest {
     }
 
     @Test
-    void testCloneStack() {
+    void testCopyStack() {
         var queue = new SimpleQueue<Integer>();
         queue.push(1);
         queue.push(2);
         queue.push(3);
 
-        var queueClone = queue.clone();
+        var queueClone = queue.copy();
         Assertions.assertEquals(queue.size(), queueClone.size());
 
         Assertions.assertEquals(queue.pop(), queueClone.pop());

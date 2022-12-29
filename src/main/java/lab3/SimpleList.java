@@ -103,7 +103,7 @@ public class SimpleList<T> implements CustomList<T> {
 
 
     @Override
-    public T delete(int index) {
+    public T remove(int index) {
         validateArrayIndex(index);
         var existsElement = array[index];
         System.arraycopy(array, index + 1, array, index, size - 1 - index);
@@ -116,7 +116,7 @@ public class SimpleList<T> implements CustomList<T> {
     public boolean remove(Object object) {
         for (int i = 0; i < size; i++) {
             if (array[i].equals(object)) {
-                delete(i);
+                remove(i);
                 return true;
             }
         }
@@ -146,11 +146,12 @@ public class SimpleList<T> implements CustomList<T> {
     }
 
 
-    public Object[] clone() {
+    public CustomList<T> copy() {
         var obj = new Object[size];
         for (int i = 0; i < size; i++) {
             obj[i] = array[i];
         }
-        return obj;
+
+        return new SimpleList<T>(obj);
     }
 }
