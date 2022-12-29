@@ -1,26 +1,17 @@
 package lab3;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Setter;
 
 
-public class SingleLinkedList<T> implements CustomList<T> {
+public class CircleLinkedList<T> implements CustomList<T> {
+    private Node head = null;
+    private Node tail = null;
+    private int size = 0;
 
-    private Node head;
-    private Node tail;
-    private Integer size;
-
-
-    public SingleLinkedList() {
-        this.head = null;
-        this.tail = null;
-        this.size = 0;
-    }
 
     @Override
     public void add(T element) {
-        Node newNode = new Node(null, element);
+        Node newNode = new Node(element);
 
         if (head == null) {
             head = newNode;
@@ -29,19 +20,17 @@ public class SingleLinkedList<T> implements CustomList<T> {
         }
 
         tail = newNode;
+        tail.next = head;
         size++;
     }
-
 
     @Override
     public void insert(int index, T element) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-
         if (index == size) {
             add(element);
-            return;
         }
 
         var nextNode = getNode(index);
@@ -59,19 +48,19 @@ public class SingleLinkedList<T> implements CustomList<T> {
 
     @Override
     public T get(int index) {
-        return getNode(index).getValue();
+        return getNode(index).value;
     }
 
     @Override
     public T remove(int index) {
         var node = getNode(index);
         removeAt(index);
-        return node.getValue();
+        return node.value;
     }
 
     @Override
     public boolean remove(T element) {
-        int index = searchElement(element);
+        int index = findElement(element);
         if (index != -1) {
             return removeAt(index);
         }
@@ -88,13 +77,13 @@ public class SingleLinkedList<T> implements CustomList<T> {
             head = nodeNext;
         }
 
-        if (nodeNext == null) {
+        if (index == size) {
             nodePrevious = getNode(index - 1);
-            nodePrevious.setNext(null);
+            nodePrevious.setNext(nodeNext);
             tail = nodePrevious;
         }
 
-        if (index != 0 && nodeNext != null) {
+        if (index != 0 && index != size) {
             nodePrevious = getNode(index - 1);
             nodePrevious.setNext(nodeNext);
         }
@@ -111,6 +100,7 @@ public class SingleLinkedList<T> implements CustomList<T> {
     @Override
     public void clear() {
         head = null;
+        tail = null;
         size = 0;
     }
 
@@ -121,48 +111,51 @@ public class SingleLinkedList<T> implements CustomList<T> {
 
     @Override
     public CustomList<T> copy() {
-        var clone = new SingleLinkedList<T>();
+        var list = new CircleLinkedList<T>();
         var node = head;
         for (int i = 0; i < size; i++) {
-            clone.add(node.value);
+            list.add(node.value);
         }
 
-        return clone;
+        return list;
     }
 
-
-    private int searchElement(T element) {
+    private int findElement(T car) {
         Node node = head;
         for (int i = 0; i < size; i++) {
-            if (node.value.equals(element)) {
+            if (node.value.equals(car)) {
                 return i;
             }
             node = node.next;
         }
-
         return -1;
     }
-
 
     private Node getNode(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
-
         Node node = head;
         for (int i = 0; i < index; i++) {
             node = node.next;
         }
-
         return node;
     }
 
 
-    @AllArgsConstructor
     @Setter
-    @Getter
-    private class Node {
-        private Node next;
-        private T value;
+    class Node {
+
+        T value;
+        Node next;
+
+        public Node(T value) {
+            this.value = value;
+        }
+
+        public Node(Node next, T value) {
+            this.next = next;
+            this.value = value;
+        }
     }
 }

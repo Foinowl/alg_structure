@@ -1,15 +1,14 @@
-package lab1;
+package lab3;
 
-import lab3.SingleLinkedList;
+import lab3.DoubleLinkedList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
-public class SingleLinkedListTest {
-
+public class DoubleLinkedListTest {
     @Test
     void testAdd() {
-        var list = new SingleLinkedList<Integer>();
+        var list = new DoubleLinkedList<Integer>();
         list.add(1);
         list.add(5);
         list.add(9);
@@ -23,14 +22,14 @@ public class SingleLinkedListTest {
 
     @Test
     void testInsert() {
-        var list = new SingleLinkedList<Integer>();
+        var list = new DoubleLinkedList<Integer>();
         list.add(23);
         list.add(12);
         list.add(55);
 
 
         list.insert(0, 44);
-        list.insert(1 , 17);
+        list.insert(1, 17);
         list.insert(4, 33);
 
         Assertions.assertEquals(44, list.get(0));
@@ -44,7 +43,7 @@ public class SingleLinkedListTest {
 
     @Test
     void testRemove() {
-        var list = new SingleLinkedList<Integer>();
+        var list = new DoubleLinkedList<Integer>();
         list.add(23);
         list.add(12);
         list.add(55);
@@ -68,7 +67,7 @@ public class SingleLinkedListTest {
 
     @Test
     void testCopy() {
-        var list = new SingleLinkedList<Integer>();
+        var list = new DoubleLinkedList<Integer>();
         list.add(23);
         list.add(12);
 

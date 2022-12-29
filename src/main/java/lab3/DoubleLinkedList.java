@@ -1,77 +1,60 @@
 package lab3;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-
-public class SingleLinkedList<T> implements CustomList<T> {
+public class DoubleLinkedList<T> implements CustomList<T> {
 
     private Node head;
     private Node tail;
-    private Integer size;
+    private int size = 0;
 
-
-    public SingleLinkedList() {
-        this.head = null;
-        this.tail = null;
-        this.size = 0;
-    }
 
     @Override
     public void add(T element) {
-        Node newNode = new Node(null, element);
-
-        if (head == null) {
-            head = newNode;
+        if (size == 0) {
+            head = new Node(null, element, null);
+            tail = head;
         } else {
-            tail.next = newNode;
+            Node previousNode = tail;
+            tail = new Node(previousNode, element, null);
+            previousNode.next = tail;
         }
-
-        tail = newNode;
         size++;
     }
-
 
     @Override
     public void insert(int index, T element) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-
         if (index == size) {
             add(element);
-            return;
         }
-
-        var nextNode = getNode(index);
-        var currentNode = new Node(nextNode, element);
-
-        if (index != 0) {
-            var previousNode = getNode(index - 1);
-            previousNode.setNext(currentNode);
+        Node nodeNext = getNode(index);
+        Node nodePrevious = nodeNext.previous;
+        Node newNode = new Node(nodePrevious, element, nodeNext);
+        nodeNext.previous = newNode;
+        if (nodePrevious != null) {
+            nodePrevious.next = newNode;
         } else {
-            head = currentNode;
+            head = newNode;
         }
-
         size++;
     }
 
     @Override
     public T get(int index) {
-        return getNode(index).getValue();
+        return getNode(index).value;
     }
 
     @Override
     public T remove(int index) {
         var node = getNode(index);
         removeAt(index);
-        return node.getValue();
+        return node.value;
     }
 
     @Override
     public boolean remove(T element) {
-        int index = searchElement(element);
+        int index = findElement(element);
         if (index != -1) {
             return removeAt(index);
         }
@@ -81,24 +64,17 @@ public class SingleLinkedList<T> implements CustomList<T> {
     public boolean removeAt(int index) {
         Node node = getNode(index);
         Node nodeNext = node.next;
-
-        Node nodePrevious;
-
-        if (index == 0) {
-            head = nodeNext;
-        }
-
-        if (nodeNext == null) {
-            nodePrevious = getNode(index - 1);
-            nodePrevious.setNext(null);
+        Node nodePrevious = node.previous;
+        if (nodeNext != null) {
+            nodeNext.previous = nodePrevious;
+        } else {
             tail = nodePrevious;
         }
-
-        if (index != 0 && nodeNext != null) {
-            nodePrevious = getNode(index - 1);
-            nodePrevious.setNext(nodeNext);
+        if (nodePrevious != null) {
+            nodePrevious.next = nodeNext;
+        } else {
+            head = nodeNext;
         }
-
         size--;
         return true;
     }
@@ -111,6 +87,7 @@ public class SingleLinkedList<T> implements CustomList<T> {
     @Override
     public void clear() {
         head = null;
+        tail = null;
         size = 0;
     }
 
@@ -121,48 +98,47 @@ public class SingleLinkedList<T> implements CustomList<T> {
 
     @Override
     public CustomList<T> copy() {
-        var clone = new SingleLinkedList<T>();
+        var list = new DoubleLinkedList<T>();
         var node = head;
         for (int i = 0; i < size; i++) {
-            clone.add(node.value);
+            list.add(node.value);
         }
 
-        return clone;
+        return list;
     }
 
-
-    private int searchElement(T element) {
+    private int findElement(T car) {
         Node node = head;
         for (int i = 0; i < size; i++) {
-            if (node.value.equals(element)) {
+            if (node.value.equals(car)) {
                 return i;
             }
             node = node.next;
         }
-
         return -1;
     }
-
 
     private Node getNode(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
-
         Node node = head;
         for (int i = 0; i < index; i++) {
             node = node.next;
         }
-
         return node;
     }
 
 
-    @AllArgsConstructor
-    @Setter
-    @Getter
     private class Node {
-        private Node next;
+        private Node previous;
         private T value;
+        private Node next;
+
+        public Node(Node previous, T value, Node next) {
+            this.previous = previous;
+            this.value = value;
+            this.next = next;
+        }
     }
 }
