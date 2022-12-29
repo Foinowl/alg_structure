@@ -30,12 +30,6 @@ public interface CustomList<T> {
     boolean remove(T element);
 
     /*
-     * Печать всех элементов списка
-     * */
-    void print();
-
-
-    /*
      * Освобождение памяти от структуры данны
      * */
     void clear();

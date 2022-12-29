@@ -76,4 +76,17 @@ public class SingleLinkedListTest {
         Assertions.assertEquals(list.get(0), copy.get(0));
         Assertions.assertEquals(list.get(0), copy.get(1));
     }
+
+    @Test
+    void testPrint() {
+        var list = new SingleLinkedList<Integer>();
+        list.add(23);
+        list.add(12);
+        list.add(55);
+        list.add(44);
+        list.add(17);
+        list.add(33);
+
+        System.out.println(list);
+    }
 }

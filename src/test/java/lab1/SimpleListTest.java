@@ -79,7 +79,17 @@ public class SimpleListTest {
         list.add(555);
         list.add(228);
 
-        list.remove(555);
+        list.remove((Integer)555);
         Assertions.assertEquals(2, list.size());
+    }
+
+    @Test
+    void testPrint() {
+        var list = new SimpleList<>();
+        list.add(122);
+        list.add(555);
+        list.add(228);
+
+        System.out.println(list);
     }
 }

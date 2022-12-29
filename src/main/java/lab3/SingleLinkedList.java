@@ -104,9 +104,19 @@ public class SingleLinkedList<T> implements CustomList<T> {
     }
 
     @Override
-    public void print() {
-
+    public String toString() {
+        var node = head;
+        var stb = new StringBuilder();
+        while (node != null) {
+            stb.append(node.getValue());
+            node = node.getNext();
+            if (node != null) {
+                stb.append("->");
+            }
+        }
+        return stb.toString();
     }
+
 
     @Override
     public void clear() {

@@ -130,12 +130,21 @@ public class SimpleList<T> implements CustomList<T> {
     }
 
 
-    /*
-     * пздц распечатку лень делать :)
-     * */
     @Override
-    public void print() {
+    public String toString() {
+        var stb = new StringBuilder();
+        stb.append("[ ");
 
+        for (int i = 0; i < size; i++) {
+            stb.append(array[i]);
+            if (i != size - 1 ){
+                stb.append(", ");
+            }
+        }
+
+        stb.append(" ]");
+
+        return stb.toString();
     }
 
 
